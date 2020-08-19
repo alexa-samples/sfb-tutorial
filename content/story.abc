@@ -1,0 +1,221 @@
+// Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: LicenseRef-.amazon.com.-AmznSL-1.0
+// Licensed under the Amazon Software License  http://aws.amazon.com/asl/
+
+@start
+    *say
+       Welcome to the Skill Flow Builder. Let's get to know each other.
+       What is your name?
+    *then  
+        slot playerName as 'AMAZON.US_FIRST_NAME'
+        hear my name is {playerName}, {playerName}, call me {playerName} {
+            -> learn scenes
+        }
+
+@learn scenes
+    *say
+        Great! Welcome to the framework {playerName}! Let's get started.
+        Scenes are the basic building blocks of a story in the Skill Flow Builder.  
+        They can be connected linearly, branching, looping, or any other way you can think of. 
+        First, you have to give each scene a name. For example, this scene is named 'learn scenes'. This name needs to be unique within your story. 
+        Then, you can give your scene some content. For example, this scene has 'say' content, which you are hearing right now and some 'then' content which tells it where to go next.       
+    *then
+        -> learn say and reprompt 
+
+@learn say and reprompt
+    *say
+        Let's learn more about 'say' and 'reprompt' content within a scene.
+        What you are hearing right now is this scene's 'say' content.
+        To hear this scene's 'reprompt' try not saying anything...
+    *reprompt
+        'reprompt' content is what the player will hear if nothing is said or we didn't understand what the player said.
+        If you don't provide 'reprompt' content, it will just repeat the 'say' content. 
+        Try saying 'continue' this time.
+    *then
+        hear continue, move on, ready, go {
+            -> learn choices
+        }
+
+@learn choices
+    *say
+        In the 'then' content, you can tell the scene to go somewhere if it hears something by using the keyword 'hear'. 
+        We've been using this in the previous scenes to listen for the word 'continue' and then -> the next scene.
+        You can use 'hear' multiple times in order to give players choices.
+        For example, would you like to learn more about choices or move on to the next topic?
+    *then
+        hear learn more about choices {
+            -> more on choices
+        }
+            
+        hear move on to the next topic {
+            -> learn variables
+        }
+        
+@more on choices        
+    *say
+        Players might respond with variations of the command you provide them. You can list multiple variations inline using a comma to separate them.
+        For example, say 'continue', 'move on', or 'get moving' to continue.
+    *then
+        hear continue, move on, get moving {
+            -> learn variables
+        }
+
+@learn variables
+    *say
+        Great! Sometimes you might want to add or remove items or change some attributes to make your story more exciting.
+        You can accomplish this in the 'then' content. 'set', 'increase', or 'decrease' a variable. 
+        For example, we set 'antidote' to 0.
+        Now, we can use this variable in our story. Say 'continue' to find out how.
+    *then
+        set antidote to 0
+
+        hear continue {
+            -> learn conditional
+        }
+    
+@learn conditional
+    *then
+        if antidote is 0 {
+            -> antidote zero
+        }
+        
+        if antidote is 1 {
+            -> antidote one
+        }
+
+        -> antidotes
+
+@antidote zero
+    *say
+        You are hearing this because we detected that you don't have any antidotes.
+        We used an 'if' statement in the 'then' content to accomplish this. Use a period to close your 'if' statement.
+        Add an antidote by saying 'add antidote'. 
+    *reprompt
+        Say 'add antidote.'
+    *then
+    
+        hear add antidote, antidote, more antidote {
+            increase antidote by 1
+            -> learn conditional
+        }
+
+@antidote one
+    *say
+        You are hearing this because we detected that you now have 1 antidote.
+        Add one more antidote by saying 'add antidote'. 
+    *reprompt
+        Say 'add antidote.'
+    *then
+        hear add antidote, antidote, more antidote {
+            increase antidote by 1
+            -> learn conditional
+        }
+    
+@antidotes
+    *say
+        You have {antidote} antidotes. 
+        You are hearing this because the first 2 'if' statements weren't triggered. 
+        When an 'if' is triggered and it has a '->' in it, nothing afterwards is executed. 
+        Try adding one more antidote or say continue to move to next scene.
+    *recap
+        You have {antidote} antidotes. 
+        This is the same scene as the one you just heard but you are hearing the recap content instead of the say content.
+        The 'recap' is played if you have already heard this scene once and can be useful in trimming down long scenes that the user could encounter multiple times.
+        You can add even more antidotes by saying 'add antidote' or say 'continue' to move on.
+    *then
+        hear add antidote, antidote, more antidote {
+            increase antidote by 1
+            -> learn conditional
+        }
+
+        hear continue, move on {
+            -> images
+        }
+        
+@images
+    *say
+        Skill Flow Builder allows you to show content on supported devices during a scene.
+        Ready to continue?
+    *show
+        template: 'default'
+        background:'https://m.media-amazon.com/images/G/01/alexa-games/backgrounds/memorystory-gui-1._CB473869069_.png'
+        image:'https://sfb-framework.s3.amazonaws.com/examples/images/alps.jpg'
+        title: 'Skill Flow Builder'
+        subtitle: ''
+    *then
+        hear continue, yes, ready {
+            -> background music
+        }
+        
+@background music
+    *say
+        Skill Flow Builder allows you to mix sounds into the background of a scene and use SSML in the say section, like playing a trumpet sound. <audio src='https://s3.amazonaws.com/alexa-ml/testadventureskill/en-US/audio/trumpet_1.mp3' /> 
+        Ready to continue?
+    *then
+        // BGM requires polly-config enabled from the abcConfig.json
+		bgm https://alexa-ml.s3.amazonaws.com/sounds/sound-library/EXTRA/Crowd_Cheer_2_LONG.mp3
+        hear continue, yes, ready {
+            -> snippets
+        }
+
+@snippets
+    *say
+        Snippets allow you to insert content or markup into your story. 
+        Here are a few common use cases for snippets.
+        Sound effects [trumpet]
+        [kid]
+            Character voices.
+        [/kid]
+        Pauses [pause]
+        And more! Even longer, dramatic pauses, by passing arguments to a snippet.
+        [pause for 2s]
+        You can define snippets in the abcconfig file.
+        Ready to continue?
+    *then
+        hear continue, yes, ready {
+            -> congrats
+        }
+
+@congrats
+    *say
+        Congratulations! You have finished the basic tutorial.
+        There are more features that can be found in the documentation.
+        
+@resume
+    *say
+        This is a resuming scene. This scene is played when the user re-launches your skill after exiting.
+        Do you want to continue your story from where you last left off?
+    *then
+        hear Yes {
+            >> RESUME
+        }
+        hear No {
+            >> RESTART 
+        }
+
+@pause
+    *say
+        Thanks for playing!
+
+@global append
+    *then
+        hear restart, start again {
+            // Tell the framework to restart from the beginning
+            >> RESTART
+        }
+        hear  repeat, say again, repeat it, what did you say, I didn’t understand {
+            // Tell the framework to repeat everything the player just heard. You can use >> REPROMPT which only plays the reprompt content
+            >> REPEAT
+        }
+        hear help, I need help, please help me {
+            -> help
+        }
+        hear back, previous, rewind {
+            >> BACK
+        }
+
+@help
+    *say
+        This is a help message. In this story, this scene is set up to be reachable only through the global scene.
+    *then
+        >> BACK

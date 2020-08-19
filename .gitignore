@@ -1,0 +1,12 @@
+**/node_modules
+**/*.DS_Store
+*/*/*.zip
+*/*/*/*.zip
+.idea/
+idea/
+AlexaGamesSkills.iml
+**/package-lock.json
+**/yarn.lock
+**/dist
+**/.nyc_output
+

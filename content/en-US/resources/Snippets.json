@@ -1,0 +1,9 @@
+{
+  "sfx": "<audio src='$SNIPPET_S3_RESOURCES_URI/audio/$1'/>",
+  "pic": "$SNIPPET_S3_RESOURCES_URI/images/$1",
+  "trumpet": "<audio src='https://s3.amazonaws.com/alexa-ml/sounds/sound-library-loud/Instruments/Trumpet_1.mp3' />",
+  "kid": "<voice name='Justin'>",
+  "/kid": "</voice>",
+  "pause": "<break time='1s'/>",
+  "pause for": "<break time='$1'/>"
+}

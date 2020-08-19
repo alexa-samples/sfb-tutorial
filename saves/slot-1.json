@@ -1,0 +1,1 @@
+[{"input":"","output":{"system_bookmark":"Start","system_isStoryPaused":false,"system_originStack":[{"sceneID":"start","property":"narration"}],"system_isEndingReached":true,"system_prevSpeech":[{"sceneID":"start","foreground":[{"type":"text","content":"Hello World","volume":1,"delay":0}],"background":[]}],"system_prevReprompt":[],"system_prevRecap":[]}}]
